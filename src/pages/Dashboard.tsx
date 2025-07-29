@@ -1,29 +1,40 @@
+import { useState, useEffect } from "react";
 import { FormItemType } from "../components/FormItemType";
 import { FormItem } from "../components/FormItem";
 import { FormUser } from "../components/FormUser";
+import { getItemTypes, type ItemType } from "../services/itemType";
+import styles from "./Dashboard.module.css";
 
 export function Dashboard() {
+  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+
+  async function fetchItemTypes() {
+    const data = await getItemTypes();
+    setItemTypes(data);
+  }
+
+  useEffect(() => {
+    fetchItemTypes();
+  }, []);
+
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Painel de Administração</h1>
+    <div className={styles.container}>
+      <h1>Administração H.C Lanches</h1>
 
-      <section>
-        <FormItemType />
-        {/* Lista de tipos de item com filtro aqui */}
+      <section className={styles.section}>
+        <FormItemType onCreated={fetchItemTypes} />
       </section>
 
       <hr />
 
-      <section>
-        <FormItem />
-        {/* Lista de itens com filtro aqui */}
+      <section className={styles.section}>
+        <FormItem itemTypes={itemTypes} />
       </section>
 
       <hr />
 
-      <section>
+      <section className={styles.section}>
         <FormUser />
-        {/* Lista de usuários com filtro aqui */}
       </section>
     </div>
   );
