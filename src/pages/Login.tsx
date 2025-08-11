@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService";
+import { login } from "../services/authService"; // caminho correto para o serviço
 import styles from "./Login.module.css";
 
 export function Login() {
@@ -19,12 +19,13 @@ export function Login() {
     try {
       const data = await login(email, password);
       localStorage.setItem("token", data.access_token);
+      setMessage("Login realizado com sucesso!");
       navigate("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setMessage(error.message);
+        setMessage(error.message || "Erro no login. Tente novamente.");
       } else {
-        setMessage("Erro desconhecido");
+        setMessage("Erro no login. Tente novamente.");
       }
     } finally {
       setLoading(false);
