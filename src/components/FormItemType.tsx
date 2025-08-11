@@ -6,6 +6,7 @@ import {
   updateItemType,
   deleteItemType,
 } from "../services/itemType";
+import styles from "./Base.module.css"; // Importando o CSS base
 
 interface FormItemTypeProps {
   onCreated?: () => void;
@@ -21,7 +22,7 @@ export function FormItemType({ onCreated }: FormItemTypeProps) {
     try {
       const data = await getItemTypes();
       setItemTypes(data);
-      onCreated?.(); // <- chama o callback se estiver presente
+      onCreated?.(); // Chama o callback se estiver presente
     } catch {
       setMessage("Erro ao carregar tipos de item.");
     }
@@ -45,7 +46,7 @@ export function FormItemType({ onCreated }: FormItemTypeProps) {
         setMessage("Tipo de item criado com sucesso!");
       }
       setName("");
-      await loadItemTypes(); // atualiza local e notifica o pai
+      await loadItemTypes(); // Atualiza local e notifica o pai
     } catch {
       setMessage("Erro ao salvar tipo de item.");
     }
@@ -69,19 +70,23 @@ export function FormItemType({ onCreated }: FormItemTypeProps) {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>{editingId ? "Editar Tipo de Item" : "Cadastrar Tipo de Item"}</h2>
       <form onSubmit={handleSubmit}>
         <input
+          className={styles.input}
           type="text"
           placeholder="Nome do tipo"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <button type="submit">{editingId ? "Atualizar" : "Cadastrar"}</button>
+        <button className={styles.button} type="submit">
+          {editingId ? "Atualizar" : "Cadastrar"}
+        </button>
         {editingId && (
           <button
+            className={styles.button}
             type="button"
             onClick={() => {
               setEditingId(null);
@@ -93,14 +98,22 @@ export function FormItemType({ onCreated }: FormItemTypeProps) {
           </button>
         )}
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
 
       <h3>Tipos de Item Cadastrados</h3>
       <ul>
         {itemTypes.map(({ id, name }) => (
           <li key={id}>
-            {name} <button onClick={() => handleEdit(id, name)}>Editar</button>{" "}
-            <button onClick={() => handleDelete(id)}>Excluir</button>
+            {name}{" "}
+            <button
+              className={styles.button}
+              onClick={() => handleEdit(id, name)}
+            >
+              Editar
+            </button>{" "}
+            <button className={styles.button} onClick={() => handleDelete(id)}>
+              Excluir
+            </button>
           </li>
         ))}
       </ul>

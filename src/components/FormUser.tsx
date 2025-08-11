@@ -6,6 +6,7 @@ import {
   deleteUser,
   type User,
 } from "../services/user";
+import styles from "./Base.module.css"; // Importando o CSS base
 
 export function FormUser() {
   const [name, setName] = useState("");
@@ -67,10 +68,11 @@ export function FormUser() {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>{editingId ? "Editar Usuário" : "Cadastrar Usuário"}</h2>
       <form onSubmit={handleSubmit}>
         <input
+          className={styles.input}
           type="text"
           placeholder="Nome"
           value={name}
@@ -78,6 +80,7 @@ export function FormUser() {
           required
         />
         <input
+          className={styles.input}
           type="email"
           placeholder="E-mail"
           value={email}
@@ -86,6 +89,7 @@ export function FormUser() {
         />
         {!editingId && (
           <input
+            className={styles.input}
             type="password"
             placeholder="Senha"
             value={password}
@@ -93,9 +97,12 @@ export function FormUser() {
             required
           />
         )}
-        <button type="submit">{editingId ? "Atualizar" : "Cadastrar"}</button>
+        <button className={styles.button} type="submit">
+          {editingId ? "Atualizar" : "Cadastrar"}
+        </button>
         {editingId && (
           <button
+            className={styles.button}
             type="button"
             onClick={() => {
               setEditingId(null);
@@ -110,15 +117,22 @@ export function FormUser() {
         )}
       </form>
 
-      {message && <p>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
 
       <h3>Usuários Cadastrados</h3>
       <ul>
         {users.map((user) => (
           <li key={user.id}>
             {user.name} ({user.email}){" "}
-            <button onClick={() => handleEdit(user)}>Editar</button>
-            <button onClick={() => handleDelete(user.id)}>Excluir</button>
+            <button className={styles.button} onClick={() => handleEdit(user)}>
+              Editar
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => handleDelete(user.id)}
+            >
+              Excluir
+            </button>
           </li>
         ))}
       </ul>

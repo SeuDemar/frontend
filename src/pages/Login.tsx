@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService"; // caminho correto para o serviço
+import { login } from "../services/authService";
 import styles from "./Login.module.css";
 
 export function Login() {
@@ -19,13 +19,12 @@ export function Login() {
     try {
       const data = await login(email, password);
       localStorage.setItem("token", data.access_token);
-      setMessage("Login realizado com sucesso!");
       navigate("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setMessage(error.message || "Erro no login. Tente novamente.");
+        setMessage(error.message);
       } else {
-        setMessage("Erro no login. Tente novamente.");
+        setMessage("Erro desconhecido");
       }
     } finally {
       setLoading(false);
@@ -36,7 +35,9 @@ export function Login() {
     <div className={styles.container}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
+        <label htmlFor="email">Email</label>
         <input
+          id="email"
           type="email"
           placeholder="Email"
           value={email}
@@ -45,7 +46,9 @@ export function Login() {
           className={styles.input}
           disabled={loading}
         />
+        <label htmlFor="password">Senha</label>
         <input
+          id="password"
           type="password"
           placeholder="Senha"
           value={password}

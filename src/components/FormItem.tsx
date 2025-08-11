@@ -7,6 +7,7 @@ import {
   type Item,
 } from "../services/item";
 import type { ItemType } from "../services/itemType";
+import styles from "./Base.module.css"; // Importando o CSS base
 
 type Props = {
   itemTypes: ItemType[];
@@ -71,10 +72,11 @@ export function FormItem({ itemTypes }: Props) {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>{editingId ? "Editar Item" : "Cadastrar Item"}</h2>
       <form onSubmit={handleSubmit}>
         <input
+          className={styles.input}
           type="text"
           placeholder="Nome"
           value={name}
@@ -82,6 +84,7 @@ export function FormItem({ itemTypes }: Props) {
           required
         />
         <input
+          className={styles.input}
           type="number"
           placeholder="Preço"
           value={price}
@@ -89,6 +92,7 @@ export function FormItem({ itemTypes }: Props) {
           required
         />
         <select
+          className={styles.input} // Usando a mesma classe para estilizar o select
           value={itemTypeId}
           onChange={(e) => setItemTypeId(e.target.value)}
           required
@@ -100,9 +104,12 @@ export function FormItem({ itemTypes }: Props) {
             </option>
           ))}
         </select>
-        <button type="submit">{editingId ? "Atualizar" : "Cadastrar"}</button>
+        <button className={styles.button} type="submit">
+          {editingId ? "Atualizar" : "Cadastrar"}
+        </button>
         {editingId && (
           <button
+            className={styles.button}
             type="button"
             onClick={() => {
               setEditingId(null);
@@ -117,7 +124,7 @@ export function FormItem({ itemTypes }: Props) {
         )}
       </form>
 
-      {message && <p>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
 
       <h3>Itens Cadastrados</h3>
       <ul>
@@ -125,8 +132,15 @@ export function FormItem({ itemTypes }: Props) {
           <li key={item.id}>
             {item.name} - R$ {item.price.toFixed(2)} - tipo:{" "}
             {itemTypes.find((t) => t.id === item.itemTypeId)?.name || "?"}{" "}
-            <button onClick={() => handleEdit(item)}>Editar</button>
-            <button onClick={() => handleDelete(item.id)}>Excluir</button>
+            <button className={styles.button} onClick={() => handleEdit(item)}>
+              Editar
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => handleDelete(item.id)}
+            >
+              Excluir
+            </button>
           </li>
         ))}
       </ul>
